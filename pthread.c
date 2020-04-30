@@ -1,19 +1,20 @@
 #include <pthread.h>
 #include <stdlib.h>
 
-pthread_mutex_t task_queue_lock;
-int task_available;
-Task task_queue[2];
-int N = 2;
-int task_counter = 0;
-
 struct Task{
     int inserted;
-    inserted = 0;
     int extractor;
 };
 
-void create_task(Task task){
+pthread_mutex_t task_queue_lock;
+int task_available;
+struct Task task_queue[2];
+int N = 2;
+int task_counter = 0;
+
+
+
+void create_task(struct Task task){
 
     task.inserted = 1;
     task_counter++;
@@ -30,9 +31,9 @@ int done(){
     }
 }
 
-void insert_into_queue(Task task){
+void insert_into_queue(struct Task task){
     for (int i = 0; i < 2; i++){
-        if (task_queue[i].inserted == 0){
+        if (task_queue[i].inserted != 1){
             task_queue[i].inserted = 1;
             printf("Producer inserted task.");
             break;
@@ -62,7 +63,7 @@ void *producer(void *producer_thread_data){ //argument pointer to an array
 
 
 
-void extract_from_queue(Task task){
+void extract_from_queue(struct Task task){
     for (int i = 0; i < 2; i++){
         if (task_queue[i].inserted != 0){
             task_queue[i].inserted = 0;
@@ -71,13 +72,13 @@ void extract_from_queue(Task task){
     }
 }
 
-void process_task(Task task){
+void process_task(struct Task task){
     printf("Consumer " + task_id.extractor + " extracted task.");
 }
 
 void *consumer(void *consumer_thread_data){
     int extracted;
-    Task my_task;
+    struct Task my_task;
     my_task.extractor = (int *) consumer_thread_data;
     while (!done()){
         extracted = 0;
