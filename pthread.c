@@ -1,5 +1,6 @@
 #include <pthread.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 struct Task{
     int inserted;
@@ -14,9 +15,9 @@ int task_counter = 0;
 
 
 
-void create_task(struct Task task){
+void create_task(struct Task *task){
 
-    task.inserted = 1;
+    task->inserted = 1;
     task_counter++;
 
 }
@@ -63,7 +64,7 @@ void *producer(void *producer_thread_data){ //argument pointer to an array
 
 
 
-void extract_from_queue(struct Task task){
+void extract_from_queue(struct Task *task){
     for (int i = 0; i < 2; i++){
         if (task_queue[i].inserted != 0){
             task_queue[i].inserted = 0;
@@ -73,7 +74,9 @@ void extract_from_queue(struct Task task){
 }
 
 void process_task(struct Task task){
-    printf("Consumer " + task_id.extractor + " extracted task.");
+    printf("Consumer ");
+    printf(task.extractor);
+    printf(" extracted task.");
 }
 
 void *consumer(void *consumer_thread_data){
