@@ -7,29 +7,7 @@ struct Task task_queue[2];
 int N = 2;
 int task_counter = 0;
 
-int main(){
-    //tasks = argv[1]
-    
 
-    pthread_t producer;
-    pthread_t consumer1;
-    pthread_t consumer2;
-    pthread_attr_t attr;
-    pthread_attr_init(&attr);
-
-    task_available = 0;
-    pthread_mutex_init(&task_queue_lock, NULL);
-
-    pthread_create(&producer, &attr, producer, NULL);
-    pthread_create(&consumer1, &attr, consumer, 1);
-    pthread_create(&consumer2, &attr, consumer, 2);
-
-    pthread_join(producer, NULL);
-    pthread_join(consumer1, NULL);
-    pthread_join(consumer2, NULL);
-
-    return 0;
-}
 
 void create_task(Task task){
 
@@ -113,4 +91,28 @@ void *consumer(void *consumer_thread_data){
         process_task(my_task);
     }
     pthread_exit(NULL);
+}
+
+int main(){
+    //tasks = argv[1]
+    
+
+    pthread_t producer;
+    pthread_t consumer1;
+    pthread_t consumer2;
+    pthread_attr_t attr;
+    pthread_attr_init(&attr);
+
+    task_available = 0;
+    pthread_mutex_init(&task_queue_lock, NULL);
+
+    pthread_create(&producer, &attr, producer, NULL);
+    pthread_create(&consumer1, &attr, consumer, 1);
+    pthread_create(&consumer2, &attr, consumer, 2);
+
+    pthread_join(producer, NULL);
+    pthread_join(consumer1, NULL);
+    pthread_join(consumer2, NULL);
+
+    return 0;
 }
