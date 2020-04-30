@@ -3,11 +3,15 @@
 
 pthread_mutex_t task_queue_lock;
 int task_available;
-struct Task task_queue[2];
+Task task_queue[2];
 int N = 2;
 int task_counter = 0;
 
-
+struct Task{
+    int inserted;
+    inserted = 0;
+    int extractor;
+};
 
 void create_task(Task task){
 
@@ -38,6 +42,7 @@ void insert_into_queue(Task task){
 
 void *producer(void *producer_thread_data){ //argument pointer to an array
         struct Task my_task;
+        int inserted;
         while (!done()){
             inserted = 0;
             create_task(&my_task);
@@ -55,10 +60,7 @@ void *producer(void *producer_thread_data){ //argument pointer to an array
         
 }
 
-struct Task{
-    int inserted = 0;
-    int extractor;
-};
+
 
 void extract_from_queue(Task task){
     for (int i = 0; i < 2; i++){
@@ -75,7 +77,7 @@ void process_task(Task task){
 
 void *consumer(void *consumer_thread_data){
     int extracted;
-    struct Task my_task;
+    Task my_task;
     my_task.extractor = (int *) consumer_thread_data;
     while (!done()){
         extracted = 0;
